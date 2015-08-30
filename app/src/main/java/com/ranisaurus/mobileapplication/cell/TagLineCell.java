@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.ranisaurus.baselayer.cell.BaseCell;
 import com.ranisaurus.mobileapplication.R;
 import com.ranisaurus.mobileapplication.fragment.TagLineDetailFragment;
+import com.ranisaurus.newtorklayer.models.Taglines;
 
 import butterknife.Bind;
 
@@ -24,14 +25,14 @@ public class TagLineCell extends BaseCell implements View.OnClickListener {
     @Override
     public void updateCell(Object model) {
         mDataSource = model;
-        tvTitle.setText((String) model);
+        tvTitle.setText(((Taglines) mDataSource).getTagline());
     }
 
 
     @Override
     public void onClick(View v) {
         long position = this.getLayoutPosition();
-        getBaseActivity().replaceFragment(TagLineDetailFragment.createInstance((String)mDataSource), R.id.container_main);
+        getBaseActivity().replaceFragment(TagLineDetailFragment.createInstance(((Taglines) mDataSource)), R.id.container_main);
     }
 
 }

@@ -8,13 +8,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ranisaurus.baselayer.adapter.GeneralBaseAdapter;
 import com.ranisaurus.baselayer.fragment.BaseFragment;
 import com.ranisaurus.mobileapplication.R;
 import com.ranisaurus.mobileapplication.cell.TagLineCell;
 import com.ranisaurus.mobileapplication.config.Constants;
+import com.ranisaurus.newtorklayer.enums.NetworkRequestEnum;
+import com.ranisaurus.newtorklayer.manager.NetworkManager;
+import com.ranisaurus.newtorklayer.models.Categories;
+import com.ranisaurus.newtorklayer.models.TagLineCategoryRequestModel;
+import com.ranisaurus.newtorklayer.models.TagLineCategoryResponseModel;
+import com.ranisaurus.newtorklayer.requests.TagLineListRequest;
+import com.ranisaurus.utilitylayer.logger.Log4a;
+import com.ranisaurus.utilitylayer.network.GsonUtil;
 
 import butterknife.Bind;
 
@@ -31,14 +38,17 @@ public class TagLineFragment extends BaseFragment {
 
     GeneralBaseAdapter<TagLineCell> categoryAdapter;
 
+    String categoryID = "";
+
     public TagLineFragment() {
     }
 
-    public static BaseFragment createInstance(String taglineID)
+    public static BaseFragment createInstance(Object category)
     {
+        Categories model = (Categories)category;
         TagLineFragment fragment = new TagLineFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.TAG_LINE_CATEGORY_ID,taglineID);
+        args.putString(Constants.TAG_LINE_CATEGORY_ID,model.getId());
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,12 +56,13 @@ public class TagLineFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,R.layout.fragment_tagline);
-
         if (getArguments() != null)
         {
-            Toast.makeText(mContext, "Tag line " + getArguments().getString(Constants.TAG_LINE_CATEGORY_ID), Toast.LENGTH_SHORT).show();
+            categoryID = getArguments().getString(Constants.TAG_LINE_CATEGORY_ID);
         }
+
+        super.onCreateView(inflater,R.layout.fragment_tagline);
+
 
         return mView;
     }
@@ -60,7 +71,6 @@ public class TagLineFragment extends BaseFragment {
     public void initObjects() {
         super.initObjects();
 
-        this.getLocalDataSource().add("test");
     }
 
     @Override
@@ -93,5 +103,67 @@ public class TagLineFragment extends BaseFragment {
     @Override
     public void initNetworkCalls() {
         super.initNetworkCalls();
+
+        if (categoryID != null  && categoryID.length() > 0){
+            showLoader();
+            getListData(categoryID);
+        }
+    }
+
+
+    //Network Requests
+    private void getListData(String categoryID) {
+        TagLineCategoryRequestModel model = new TagLineCategoryRequestModel();
+        model.setAction("gettagline");
+        model.setCategoryid(categoryID);
+        TagLineListRequest request = new TagLineListRequest(model);
+
+        try {
+            NetworkManager.getInstance().executeRequest(request, this,
+                    NetworkRequestEnum.TAG_LINE_LIST);
+        } catch (Exception e) {
+            Log4a.printException(e);
+        }
+    }
+    // listener
+
+
+    @Override
+    public void responseWithError(Exception error, NetworkRequestEnum requestType) {
+        super.responseWithError(error, requestType);
+        if (mView != null) {
+            switch (requestType) {
+                case TAG_LINE_LIST: {
+                    categoriesSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void successWithData(Object data, NetworkRequestEnum requestType) {
+        super.successWithData(data, requestType);
+
+        if (mView != null) {
+            switch (requestType) {
+                case TAG_LINE_LIST: {
+                    TagLineCategoryResponseModel model = (TagLineCategoryResponseModel) GsonUtil.getObjectFromJsonObject(data, TagLineCategoryResponseModel.class);
+
+                    if (model != null) {
+                        if (model.getTaglines().size() > 0 )
+                        {
+                            this.getLocalDataSource().clear();
+                            this.getLocalDataSource().addAll(model.getTaglines());
+                        }
+
+                        categoryAdapter.notifyDataSetChanged();
+                    }
+                    categoriesSwipeRefreshLayout.setRefreshing(false);
+                }
+                break;
+
+            }
+        }
     }
 }

@@ -9,6 +9,8 @@ import android.view.View;
 import com.ranisaurus.baselayer.activity.BaseActivity;
 import com.ranisaurus.baselayer.view.CircularLoader;
 import com.ranisaurus.newtorklayer.enums.NetworkRequestEnum;
+import com.ranisaurus.newtorklayer.manager.NetworkConfig;
+import com.ranisaurus.newtorklayer.manager.NetworkManager;
 import com.ranisaurus.newtorklayer.protocols.IResponseProtocol;
 import com.ranisaurus.utilitylayer.logger.Log4a;
 
@@ -118,7 +120,8 @@ public class BaseFragment extends Fragment implements IResponseProtocol {
 
 
     public void initNetworkCalls() {
-
+        //setup network layer
+        NetworkManager.setConfiguration(new NetworkConfig(getBaseActivity()));
     }
 
 

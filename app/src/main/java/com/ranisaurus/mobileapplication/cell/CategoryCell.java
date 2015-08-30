@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.ranisaurus.baselayer.cell.BaseCell;
 import com.ranisaurus.mobileapplication.R;
 import com.ranisaurus.mobileapplication.fragment.TagLineFragment;
+import com.ranisaurus.newtorklayer.models.Categories;
 
 import butterknife.Bind;
 
@@ -23,13 +24,14 @@ public class CategoryCell extends BaseCell implements View.OnClickListener{
     @Override
     public void updateCell(Object model) {
         mDataSource = model;
-        tvTitle.setText((String) model);
+        Categories data = (Categories)mDataSource;
+        tvTitle.setText(data.getCategory());
     }
 
     @Override
     public void onClick(View v) {
         long position = this.getLayoutPosition();
-        getBaseActivity().replaceFragment(TagLineFragment.createInstance((String) mDataSource), R.id.container_main);
+        getBaseActivity().replaceFragment(TagLineFragment.createInstance(mDataSource), R.id.container_main);
 
     }
 

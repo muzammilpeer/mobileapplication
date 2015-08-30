@@ -8,6 +8,7 @@ import com.ranisaurus.utilitylayer.reflection.ReflectionUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 /**
  * Created by MuzammilPeer on 3/13/2015.
@@ -61,10 +62,15 @@ public class GsonUtil {
         StringBuilder sb = new StringBuilder();
 //        sb.append(url);
         if (model != null) {
-            sb.append("?");
             Boolean flag = true;
-            for (Method method : ReflectionUtil.findGettersSetters(
-                    model.getClass(), true)) {
+            ArrayList<Method> methods =  ReflectionUtil.findGettersSetters(
+                    model.getClass(), true);
+            if (methods.size() > 0  )
+            {
+                sb.append("?");
+            }
+
+            for (Method method : methods) {
                 try {
                     String returnValue = (String) method.invoke(model, null);
                     if (returnValue != null) {

@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.ranisaurus.baselayer.fragment.BaseFragment;
 import com.ranisaurus.mobileapplication.R;
 import com.ranisaurus.mobileapplication.config.Constants;
+import com.ranisaurus.newtorklayer.models.Taglines;
 
 import butterknife.Bind;
 
@@ -24,15 +24,18 @@ public class TagLineDetailFragment extends BaseFragment {
     @Bind(R.id.etHowTo)
     EditText howToEditText;
 
+    String tagLineID,tagLineTitle,tagLineHowTo;
 
     public TagLineDetailFragment() {
     }
 
-    public static BaseFragment createInstance(String taglineID)
+    public static BaseFragment createInstance(Taglines taglines)
     {
         TagLineDetailFragment fragment = new TagLineDetailFragment();
         Bundle args = new Bundle();
-        args.putString(Constants.TAG_LINE_ID,taglineID);
+        args.putString(Constants.TAG_LINE_ID,taglines.getId());
+        args.putString(Constants.TAG_LINE_TITLE,taglines.getTagline());
+        args.putString(Constants.TAG_LINE_HOW,taglines.getHowTo());
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,12 +43,15 @@ public class TagLineDetailFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        super.onCreateView(inflater,R.layout.fragment_tagline_detail);
-
         if (getArguments() != null)
         {
-            Toast.makeText(mContext, "Some Data " + getArguments().getString(Constants.TAG_LINE_ID), Toast.LENGTH_SHORT).show();
+            tagLineID = getArguments().getString(Constants.TAG_LINE_ID);
+            tagLineTitle = getArguments().getString(Constants.TAG_LINE_TITLE);
+            tagLineHowTo = getArguments().getString(Constants.TAG_LINE_HOW);
         }
+
+        super.onCreateView(inflater,R.layout.fragment_tagline_detail);
+
 
         return mView;
     }
@@ -54,6 +60,13 @@ public class TagLineDetailFragment extends BaseFragment {
     public void initObjects() {
         super.initObjects();
 
+        if (tagLineID != null)
+        {
+            tagLineEditText.setText(tagLineTitle);
+            howToEditText.setText(tagLineHowTo);
+            tagLineEditText.setEnabled(false);
+            howToEditText.setEnabled(false);
+        }
 
     }
 

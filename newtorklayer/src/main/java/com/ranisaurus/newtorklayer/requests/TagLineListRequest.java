@@ -1,21 +1,21 @@
 package com.ranisaurus.newtorklayer.requests;
 
 import com.ranisaurus.newtorklayer.enums.NetworkRequestEnum;
-import com.ranisaurus.newtorklayer.models.CategoriesRequestModel;
+import com.ranisaurus.newtorklayer.models.TagLineCategoryRequestModel;
 
 /**
  * Created by muzammilpeer on 8/30/15.
  */
-public class ListCategoriesRequest extends BaseNetworkRequest {
+public class TagLineListRequest extends BaseNetworkRequest {
 
     //copy constructor
-    public ListCategoriesRequest(Object model) {
+    public TagLineListRequest(Object model) {
         super(model);
     }
 
     public String getURL() throws Exception {
         return NetworkRequestEnum.BASE_SERVER_URL.getRelativeUrl()
-                + NetworkRequestEnum.CATEGORIES_LIST.getRelativeUrl();
+                + NetworkRequestEnum.TAG_LINE_LIST.getRelativeUrl();
     }
 
     @Override
@@ -25,14 +25,8 @@ public class ListCategoriesRequest extends BaseNetworkRequest {
 
     @Override
     public String getData() throws Exception {
-        return "?action="+((CategoriesRequestModel)this.getDataModel()).getAction();
+        return "?action="+((TagLineCategoryRequestModel)this.getDataModel()).getAction()+"&categoryid="+((TagLineCategoryRequestModel)this.getDataModel()).getCategoryid();
 //        return GsonUtil.getQueryStringURL(this.getDataModel());
     }
-//    public Boolean havePostData() {
-//        return true;
-//    }
-//
-//    public JsonObject postData() throws Exception {
-//        return GsonUtil.getJsonObjectFromObject(this.getDataModel());
-//    }
+
 }

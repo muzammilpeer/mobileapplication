@@ -15,8 +15,8 @@ public enum NetworkRequestEnum {
     //http://www.sdtps.gov.ae/SDTPS.WebAPI/
     //http://appserver1.systemsltd.com/SDTPS.WebAPI/
     BASE_SERVER_URL(0, "http://ranisaurus.com/webservice/", "Production server url request"),
-    CATEGORIES_LIST(2, "webservice.php?action=getcategories", "Get Categories List"),
-    TAG_LINE_DETAIL(3, "webservice.php?action=gettagline&categoryid=12", "Get Tag Line detail"),
+    CATEGORIES_LIST(2, "webservice.php", "Get Categories List"),
+    TAG_LINE_LIST(3, "webservice.php", "Get Tag Line detail"),
     CREATE_TAG_LINE(4, "webservice.php?action=addtagline&tagline=test&howto=test", "Create tagline"),
     ;// semicolon needed when fields / methods follow
 

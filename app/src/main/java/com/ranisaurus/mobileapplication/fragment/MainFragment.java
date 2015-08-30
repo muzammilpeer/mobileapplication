@@ -13,6 +13,13 @@ import com.ranisaurus.baselayer.adapter.GeneralBaseAdapter;
 import com.ranisaurus.baselayer.fragment.BaseFragment;
 import com.ranisaurus.mobileapplication.R;
 import com.ranisaurus.mobileapplication.cell.CategoryCell;
+import com.ranisaurus.newtorklayer.enums.NetworkRequestEnum;
+import com.ranisaurus.newtorklayer.manager.NetworkManager;
+import com.ranisaurus.newtorklayer.models.CategoriesRequestModel;
+import com.ranisaurus.newtorklayer.models.CategoriesResponseModel;
+import com.ranisaurus.newtorklayer.requests.ListCategoriesRequest;
+import com.ranisaurus.utilitylayer.logger.Log4a;
+import com.ranisaurus.utilitylayer.network.GsonUtil;
 
 import butterknife.Bind;
 
@@ -52,12 +59,12 @@ public class MainFragment extends BaseFragment {
     public void initObjects() {
         super.initObjects();
 
-        this.getLocalDataSource().add("test1");
-        this.getLocalDataSource().add("test2");
-        this.getLocalDataSource().add("test3");
-        this.getLocalDataSource().add("test4");
-        this.getLocalDataSource().add("test5");
-        this.getLocalDataSource().add("test6");
+//        this.getLocalDataSource().add("test1");
+//        this.getLocalDataSource().add("test2");
+//        this.getLocalDataSource().add("test3");
+//        this.getLocalDataSource().add("test4");
+//        this.getLocalDataSource().add("test5");
+//        this.getLocalDataSource().add("test6");
     }
 
     @Override
@@ -78,7 +85,7 @@ public class MainFragment extends BaseFragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-//                        setupAdapter();
+                        getListData();
                         categoriesSwipeRefreshLayout.setRefreshing(false);
                     }
                 }, 2500);
@@ -92,10 +99,64 @@ public class MainFragment extends BaseFragment {
     @Override
     public void initNetworkCalls() {
         super.initNetworkCalls();
+
+        showLoader();
+        getListData();
+
     }
 
+    //Network Requests
+    private void getListData() {
+        CategoriesRequestModel model = new CategoriesRequestModel();
+        model.setAction("getcategories");
+        ListCategoriesRequest request = new ListCategoriesRequest(model);
+
+        try {
+            NetworkManager.getInstance().executeRequest(request, this,
+                    NetworkRequestEnum.CATEGORIES_LIST);
+        } catch (Exception e) {
+            Log4a.printException(e);
+        }
+    }
     // listener
 
 
+    @Override
+    public void responseWithError(Exception error, NetworkRequestEnum requestType) {
+        super.responseWithError(error, requestType);
+        if (mView != null) {
+            switch (requestType) {
+                case CATEGORIES_LIST: {
+                    categoriesSwipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        }
+    }
 
+
+    @Override
+    public void successWithData(Object data, NetworkRequestEnum requestType) {
+        super.successWithData(data, requestType);
+
+        if (mView != null) {
+            switch (requestType) {
+                case CATEGORIES_LIST: {
+                    CategoriesResponseModel model = (CategoriesResponseModel) GsonUtil.getObjectFromJsonObject(data, CategoriesResponseModel.class);
+
+                    if (model != null) {
+                        if (model.getCategories().size() > 0 )
+                        {
+                            this.getLocalDataSource().clear();
+                            this.getLocalDataSource().addAll(model.getCategories());
+                        }
+
+                        categoryAdapter.notifyDataSetChanged();
+                    }
+                    categoriesSwipeRefreshLayout.setRefreshing(false);
+                }
+                break;
+
+            }
+        }
+    }
 }
