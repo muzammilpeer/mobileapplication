@@ -6,6 +6,7 @@ import android.view.MenuItem;
 
 import com.ranisaurus.baselayer.activity.BaseActivity;
 import com.ranisaurus.mobileapplication.R;
+import com.ranisaurus.mobileapplication.fragment.MainFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -14,6 +15,9 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //setup first screen
+        MainFragment fragment = new MainFragment();
+        addFragment(fragment, R.id.container_main);
     }
 
 

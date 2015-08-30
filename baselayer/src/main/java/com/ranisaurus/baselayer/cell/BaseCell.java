@@ -3,6 +3,8 @@ package com.ranisaurus.baselayer.cell;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.ranisaurus.baselayer.activity.BaseActivity;
+
 import butterknife.ButterKnife;
 
 /**
@@ -10,9 +12,15 @@ import butterknife.ButterKnife;
  */
 abstract public  class BaseCell extends RecyclerView.ViewHolder {
 
+    protected Object mDataSource;
     public BaseCell(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
+    }
+
+    public BaseActivity getBaseActivity()
+    {
+        return (BaseActivity)itemView.getContext();
     }
 
     abstract public void updateCell(Object model);

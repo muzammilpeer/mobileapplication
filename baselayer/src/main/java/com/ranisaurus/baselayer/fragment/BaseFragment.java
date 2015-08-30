@@ -31,8 +31,6 @@ public class BaseFragment extends Fragment implements IResponseProtocol {
     public BaseFragment() {
     }
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +40,6 @@ public class BaseFragment extends Fragment implements IResponseProtocol {
     // custom onCreateView
     public void onCreateView(LayoutInflater inflater,int resource) {
         mContext = getBaseActivity();
-//        LayoutInflater inflater = getLayoutInflater();
         mView = inflater.inflate(resource, null, false);
         setupFragment();
     }
@@ -72,7 +69,6 @@ public class BaseFragment extends Fragment implements IResponseProtocol {
         super.onDestroyView();
         try {
             ButterKnife.unbind(this);
-
         }catch (Exception e)
         {
             Log4a.printException(e);

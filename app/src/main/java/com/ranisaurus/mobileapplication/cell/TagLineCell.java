@@ -5,17 +5,18 @@ import android.widget.TextView;
 
 import com.ranisaurus.baselayer.cell.BaseCell;
 import com.ranisaurus.mobileapplication.R;
-import com.ranisaurus.mobileapplication.fragment.TagLineFragment;
+import com.ranisaurus.mobileapplication.fragment.TagLineDetailFragment;
 
 import butterknife.Bind;
 
 /**
  * Created by muzammilpeer on 8/30/15.
  */
-public class CategoryCell extends BaseCell implements View.OnClickListener{
-    public @Bind(R.id.tv_category_row) TextView tvTitle;
+public class TagLineCell extends BaseCell implements View.OnClickListener {
+    public @Bind(R.id.tv_tagline_row)
+    TextView tvTitle;
 
-    public CategoryCell(View itemView) {
+    public TagLineCell(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
     }
@@ -26,11 +27,11 @@ public class CategoryCell extends BaseCell implements View.OnClickListener{
         tvTitle.setText((String) model);
     }
 
+
     @Override
     public void onClick(View v) {
         long position = this.getLayoutPosition();
-        getBaseActivity().replaceFragment(TagLineFragment.createInstance((String) mDataSource), R.id.container_main);
-
+        getBaseActivity().replaceFragment(TagLineDetailFragment.createInstance((String)mDataSource), R.id.container_main);
     }
 
 }
