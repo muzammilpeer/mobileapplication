@@ -24,6 +24,7 @@ dependencies {
     //all Appcompact library reference latest to v22 and material design.
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:multidex:1.0.0'
 
