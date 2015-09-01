@@ -29,6 +29,11 @@ public class TagLineDetailFragment extends BaseFragment {
     public TagLineDetailFragment() {
     }
 
+    public static BaseFragment createInstance()
+    {
+        TagLineDetailFragment fragment = new TagLineDetailFragment();
+        return fragment;
+    }
     public static BaseFragment createInstance(Taglines taglines)
     {
         TagLineDetailFragment fragment = new TagLineDetailFragment();
@@ -54,6 +59,14 @@ public class TagLineDetailFragment extends BaseFragment {
 
 
         return mView;
+    }
+
+    @Override
+    public void initViews() {
+        super.initViews();
+        getBaseActivity().showToolbarItems();
+        getBaseActivity().showBackButton();
+        getBaseActivity().setScreenTitle(R.string.title_detail);
     }
 
     @Override

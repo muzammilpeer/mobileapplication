@@ -9,4 +9,9 @@
         android:textSize="20sp"
         android:id="@+id/tv_tagline_row"
         />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/white"/>
+
 </LinearLayout>

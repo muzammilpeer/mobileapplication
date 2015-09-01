@@ -2,6 +2,8 @@ package com.ranisaurus.mobileapplication.fragment;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,13 +28,16 @@ import butterknife.Bind;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends BaseFragment {
+public class MainFragment extends BaseFragment implements View.OnClickListener{
 
     @Bind(R.id.srl_categories)
     SwipeRefreshLayout categoriesSwipeRefreshLayout;
 
     @Bind(R.id.rv_categories)
     RecyclerView categoriesRecyclerView;
+
+    @Bind(R.id.fab_add_tagline)
+    FloatingActionButton addTagLineFloatingActionButton;
 
     GeneralBaseAdapter<CategoryCell> categoryAdapter;
 
@@ -41,7 +46,7 @@ public class MainFragment extends BaseFragment {
 
     public static BaseFragment createInstance()
     {
-        TagLineFragment fragment = new TagLineFragment();
+        MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -56,21 +61,23 @@ public class MainFragment extends BaseFragment {
     }
 
     @Override
+    public void initViews() {
+        super.initViews();
+
+        getBaseActivity().hideToolbarItems();
+        getBaseActivity().hideBackButton();
+        getBaseActivity().setScreenTitle(R.string.title_categories);
+    }
+
+    @Override
     public void initObjects() {
         super.initObjects();
 
-//        this.getLocalDataSource().add("test1");
-//        this.getLocalDataSource().add("test2");
-//        this.getLocalDataSource().add("test3");
-//        this.getLocalDataSource().add("test4");
-//        this.getLocalDataSource().add("test5");
-//        this.getLocalDataSource().add("test6");
     }
 
     @Override
     public void initListenerOrAdapter() {
         super.initListenerOrAdapter();
-
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         categoriesRecyclerView.setLayoutManager(layoutManager);
@@ -86,13 +93,16 @@ public class MainFragment extends BaseFragment {
                     @Override
                     public void run() {
                         getListData();
-                        categoriesSwipeRefreshLayout.setRefreshing(false);
+                        if (categoriesSwipeRefreshLayout != null) {
+                            categoriesSwipeRefreshLayout.setRefreshing(false);
+                        }
                     }
                 }, 2500);
             }
         });
 
 
+        addTagLineFloatingActionButton.setOnClickListener(this);
 
     }
 
@@ -103,6 +113,21 @@ public class MainFragment extends BaseFragment {
         showLoader();
         getListData();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.fab_add_tagline :
+            {
+                Snackbar.make(mView,"Creating",Snackbar.LENGTH_SHORT).show();
+                TagLineDetailFragment addTagLine = new TagLineDetailFragment();
+                getBaseActivity().replaceFragment(addTagLine,R.id.container_main);
+
+            }break;
+            default:break;
+        }
     }
 
     //Network Requests

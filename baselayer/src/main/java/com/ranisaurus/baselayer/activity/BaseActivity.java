@@ -8,13 +8,88 @@ import android.support.v7.app.AppCompatActivity;
 import com.koushikdutta.ion.Ion;
 import com.ranisaurus.utilitylayer.logger.Log4a;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import butterknife.ButterKnife;
+
 public class BaseActivity extends AppCompatActivity {
+
+    protected AtomicBoolean isFragmentLoaded = new AtomicBoolean(false);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    public void initViews() {
+        //Injection Views
+        ButterKnife.bind(this);
+    }
+
+    public void initObjects() {
+
+    }
+
+    public void initListenerOrAdapter() {
+
+    }
+
+
+    public void initNetworkCalls() {
+        //setup network layer
+//        NetworkManager.setConfiguration(new NetworkConfig(this);
+    }
+
+
+    //setup will be called by oncreateView
+    protected void setupActivity() {
+        try {
+            // 1. inject view with butterknife or manually
+            initViews();
+
+            if (isFragmentLoaded.get() == false) {
+                //2. Load object once
+                initObjects();
+                //3. Network calls once
+                initNetworkCalls();
+            }
+
+            //4. rebind the views with listeners or adapter again for renewal created views.
+            initListenerOrAdapter();
+
+
+            //mark current fragment as loaded just recreate the views only.
+            isFragmentLoaded.set(true);
+
+        } catch (Exception e) {
+            Log4a.printException(e);
+        }
+    }
+
+    public void showToolbarItems()
+    {
+
+    }
+
+    public void hideToolbarItems()
+    {
+
+    }
+
+    public void showBackButton()
+    {
+
+    }
+
+    public void hideBackButton()
+    {
+
+    }
+
+    public void setScreenTitle(int title)
+    {
+
+    }
 
     public void replaceFragment(Fragment frag, int containerID) {
         getSupportFragmentManager().beginTransaction()

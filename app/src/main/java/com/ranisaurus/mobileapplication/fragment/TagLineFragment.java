@@ -61,10 +61,19 @@ public class TagLineFragment extends BaseFragment {
             categoryID = getArguments().getString(Constants.TAG_LINE_CATEGORY_ID);
         }
 
-        super.onCreateView(inflater,R.layout.fragment_tagline);
+        super.onCreateView(inflater, R.layout.fragment_tagline);
 
 
         return mView;
+    }
+
+    @Override
+    public void initViews() {
+        super.initViews();
+        getBaseActivity().hideToolbarItems();
+        getBaseActivity().showBackButton();
+        getBaseActivity().setScreenTitle(R.string.title_taglines);
+
     }
 
     @Override
@@ -92,7 +101,9 @@ public class TagLineFragment extends BaseFragment {
                     @Override
                     public void run() {
 //                        setupAdapter();
-                        categoriesSwipeRefreshLayout.setRefreshing(false);
+                        if (categoriesSwipeRefreshLayout != null) {
+                            categoriesSwipeRefreshLayout.setRefreshing(false);
+                        }
                     }
                 }, 2500);
             }

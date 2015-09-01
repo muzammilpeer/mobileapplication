@@ -7,5 +7,9 @@
     <string name="please_enter_tagline">Please enter the tag line</string>
     <string name="howto">How to : </string>
     <string name="please_enter_howto">Please enter the How to </string>
+    
+    <string name="title_categories" >Categories</string>
+    <string name="title_taglines" >Tag Lines</string>
+    <string name="title_detail" >Detail</string>
 
 </resources>
