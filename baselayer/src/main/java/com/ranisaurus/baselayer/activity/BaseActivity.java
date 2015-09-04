@@ -1,9 +1,12 @@
 package com.ranisaurus.baselayer.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.koushikdutta.ion.Ion;
 import com.ranisaurus.utilitylayer.logger.Log4a;
@@ -89,6 +92,14 @@ public class BaseActivity extends AppCompatActivity {
     public void setScreenTitle(int title)
     {
 
+    }
+
+    public void hideKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).
+                    hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     public void replaceFragment(Fragment frag, int containerID) {

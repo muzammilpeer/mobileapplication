@@ -1,6 +1,7 @@
 package com.ranisaurus.mobileapplication.fragment;
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,14 @@ import butterknife.Bind;
  */
 public class TagLineDetailFragment extends BaseFragment {
 
+    @Bind(R.id.tilTagLine)
+    TextInputLayout tagLineTextInputLayout;
+
     @Bind(R.id.etTagLine)
     EditText tagLineEditText;
+
+    @Bind(R.id.tilHowTo)
+    TextInputLayout howToTextInputLayout;
 
     @Bind(R.id.etHowTo)
     EditText howToEditText;

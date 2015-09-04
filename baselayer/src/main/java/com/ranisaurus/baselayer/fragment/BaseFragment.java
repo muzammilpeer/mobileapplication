@@ -161,6 +161,8 @@ public class BaseFragment extends Fragment implements IResponseProtocol {
     }
 
 
+
+
     @Override
     public void responseWithError(Exception error, NetworkRequestEnum requestType) {
         Log4a.e("Webservice error", error == null || error.getMessage() == null ? "Exception" : error.getMessage() + "Data fetched for Request URL = " + requestType.getRelativeUrl());
